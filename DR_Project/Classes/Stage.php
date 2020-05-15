@@ -2,7 +2,7 @@
 class Stage {
     public $ID;
     public $level;
-    public $levelName;
+    public $LevelName;
     public $isDeleted;
 
     public function __construct($ID){
@@ -22,14 +22,14 @@ class Stage {
     
     public static function add($obj){
         $fields = array("Level","LevelName");
-        $values = array($obj->level, $obj->levelName);
+        $values = array($obj->level, $obj->LevelName);
         $db = Database::getInstance();
         $db->insert("stage", $fields, $values);
     }
 
     public static function update($obj){
         $fields = array("ID","Level","LevelName");
-        $values = array($obj->ID, $obj->level, $obj->levelName);
+        $values = array($obj->ID, $obj->level, $obj->LevelName);
         $db = Database::getInstance();
         $db->update("stage", $fields, $values);
     }

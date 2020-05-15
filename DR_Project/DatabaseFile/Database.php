@@ -68,7 +68,7 @@ class Database{
         $values = substr($values , 0 , strlen($values) - 1);
 
         $sql = "insert into ".$tableName." (".$fields.") values (".$values.") "; 
-        //echo "Sql = ".$sql."<br>";
+//       echo "Sql = ".$sql."<br>";
         
         if(mysqli_query($this->conn, $sql)){
             //echo "Insertion Succeeded";
@@ -89,7 +89,7 @@ class Database{
         $sqlConcat = substr($sqlConcat , 0 , strlen($sqlConcat) - 1);
 
         $sql = "update ".$tableName." set ".$sqlConcat." where ID= ".$data[0].""; 
-        echo "Sql = ".$sql."<br>";
+//        echo "Sql = ".$sql."<br>";
 
         if(mysqli_query($this->conn, $sql)){
             //echo "Update Succeeded";

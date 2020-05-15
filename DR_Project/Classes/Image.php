@@ -4,6 +4,7 @@ class Image {
     public $width;
     public $height;
     public $imagePath;
+    public static $folderPath = "../../Retinal_Images/";
     public $isDeleted;
 
     public function __construct($ID){
@@ -27,6 +28,7 @@ class Image {
         $values = array($obj->width, $obj->height, $obj->imagePath);
         $db = Database::getInstance();
         $db->insert("image", $fields, $values);
+        return $db->Last_ID();
     }
 
     public static function update($obj){

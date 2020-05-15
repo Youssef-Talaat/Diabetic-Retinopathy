@@ -5,6 +5,9 @@ include '../../Classes/User.php';
 include '../../Classes/Link.php';
 include '../../Classes/UserType.php';
 include '../../Classes/Image.php';
+include '../../Classes/Report.php';
+include '../../Classes/Stage.php';
+include '../../Classes/Preprocess.php';
 include '../../DatabaseFile/Database.php';
 include '../../Classes/Classify.php';
 ?>
@@ -170,10 +173,10 @@ include '../../Classes/Classify.php';
 						</div>
 						<div class='row form-group'>
 							<div class='col-md-6' align='center'>
-								<img id='outputLeft'/>
+								<img style='width:224px; height:224px;' id='outputLeft'/>
 							</div>
 							<div class='col-md-6' align='center'>
-								<img id='outputRight'/>
+								<img style='width:224px; height:224px;' id='outputRight'/>
 							</div>
 						</div>
 
@@ -195,8 +198,19 @@ include '../../Classes/Classify.php';
 
 				if(isset($_POST['classifyImage']))
 				{
-                    $image = new Image(0);
-                    $image2 = new Image(0);
+                    $LeftObject = new Image(0);
+                    $LeftObject->width = 224;
+                    $LeftObject->height = 224;
+                    
+                    $RightObject = new Image(0);
+                    $RightObject->width = 224;
+                    $RightObject->height = 224;
+                    
+                    $Report = new Report(0);
+                    $Report->doctorID = unserialize($_SESSION['user']);
+                    $Report->patientID = unserialize($_SESSION['patientID'])->ID;
+                    $Report->date = date("Y-m-d");
+                    
                     $Path = "C:/wamp64/www/DR_Project/Retinal_Images";
 
                     $LeftImage = $_FILES['imageLeft']["tmp_name"];
@@ -206,33 +220,72 @@ include '../../Classes/Classify.php';
                         echo "<script type='text/javascript'>alert('Please Choose at least One Image');</script>";
                     }
                     else if(!empty($LeftImage)&& empty($RightImage)){
-                            copy($LeftImage, $Path ."/". $_FILES['imageLeft']['name']);
-                            $LeftImagePath = $Path ."/". $_FILES['imageLeft']['name'];
-                            $image->imagePath = $LeftImagePath;
-                            $Classify = Classify::classifyWithCNN($image);
-					   // echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewResults.php';</script>";
+                            copy($LeftImage, $Path ."/". time() . ".jpg");
+                        
+                            $LeftClassifierPath = $Path ."/". time() . ".jpg";
+                            $LeftImagePath = time() . ".jpg";
+                            $LeftObject->imagePath = $LeftImagePath;
+                        
+                            Preprocess::normalize($LeftClassifierPath);
+                            
+                            $Classify = Classify::classifyWithCNN($LeftClassifierPath);
+                            $_SESSION['LImage'] = serialize($Classify);
+                        
+                            $LeftObject->ID = Image::add($LeftObject);
+                        
+                            $Report->leftImageID = $LeftObject;
+                            $Report->rightImageID = new Image(0);
+					   echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewResults.php';</script>";
                     }
                     else if(empty($LeftImage) && !empty($RightImage)){
-                            copy($RightImage, $Path ."/". $_FILES['imageRight']['name']);
-                            $RightImagePath = $Path ."/". $_FILES['imageRight']['name'];
-                            $image->imagePath = $RightImagePath;
-                            $Classify = Classify::classifyWithCNN($image);
-					   // echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewResults.php';</script>";
+                            copy($RightImage, $Path ."/". time() . ".jpg");
+                        
+                            $RightClassifierPath = $Path ."/". time() . ".jpg";
+                            $RightImagePath = time() . ".jpg";
+                            $RightObject->imagePath = $RightImagePath;
+                        
+                            Preprocess::normalize($RightClassifierPath);
+                        
+                            $Classify = Classify::classifyWithCNN($RightClassifierPath);
+                            $_SESSION['RImage'] = serialize($Classify); 
+                        
+                            $RightObject->ID = Image::add($RightObject);
+                        
+                            $Report->rightImageID = $RightObject;
+                            
+                            $Report->leftImageID = new Image(0);
+					   echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewResults.php';</script>";
                     }
                     else { // If Both are not empty
-                            copy($LeftImage, $Path ."/". $_FILES['imageLeft']['name']);
-                            copy($RightImage, $Path ."/". $_FILES['imageRight']['name']);
+                            copy($LeftImage, $Path ."/". time() . ".jpg");
+                            copy($RightImage, $Path ."/". (time() + 1). ".jpg");
                         
-                            $LeftImagePath = $Path ."/". $_FILES['imageLeft']['name'];
-                            $image->imagePath = $LeftImagePath;
+                            $LeftClassifierPath = $Path ."/". time() . ".jpg";
+                            $LeftImagePath = time() . ".jpg";
+                            $LeftObject->imagePath = $LeftImagePath;
+                            $LeftObject->ID = Image::add($LeftObject);
                                                 
-                            $RightImagePath = $Path ."/". $_FILES['imageRight']['name'];
-                            $image2->imagePath = $RightImagePath;
+                            $RightClassifierPath = $Path ."/". (time() + 1) . ".jpg";
+                            $RightImagePath = (time() + 1) . ".jpg";
+                            $RightObject->imagePath = $RightImagePath;
+                            $RightObject->ID = Image::add($RightObject);
                         
-                            $Classify = Classify::classifyWithCNN($image);
-                            $Classify2 = Classify::classifyWithCNN($image2);
-					   // echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewResults.php';</script>";
+                            Preprocess::normalize($LeftClassifierPath);
+                            Preprocess::normalize($RightClassifierPath);
+                        
+                            $Classify = Classify::classifyWithCNN($LeftClassifierPath);
+                            $Classify2 = Classify::classifyWithCNN($RightClassifierPath);
+                            
+                            $_SESSION['LImage'] = serialize($Classify);
+                            $_SESSION['RImage'] = serialize($Classify2);  
+                        
+                            $Report->rightImageID = $RightObject;
+                            $Report->leftImageID = $LeftObject;
+                        
+					   echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewResults.php';</script>";
                     }
+                    
+                        $_SESSION["Report"] = serialize($Report);
 				}
 
 			?>

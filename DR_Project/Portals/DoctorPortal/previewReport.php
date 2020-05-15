@@ -5,13 +5,35 @@ ob_start();
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Stage.php';
+include '../../Classes/Report.php';
+include '../../Classes/Image.php';
 include '../../Classes/UserType.php';
 include "../../DatabaseFile/Database.php";
+    
+$Report = unserialize($_SESSION['Report']); 
+$Patient = new User($Report->patientID);
+
 ?>
 <head>
-	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Medical Report</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+  	
 	
-	<title>Editable Invoice</title>
+	<!-- Animate.css -->
+	<!-- Bootstrap  -->
+	<!-- Flexslider  -->
+	<!-- Flaticons  -->
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="../../css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="../../js/modernizr-2.6.2.min.js"></script>
 	
 	<link rel='stylesheet' type='text/css' href='css/style.css' />
 	<link rel='stylesheet' type='text/css' href='css/print.css' media='print' />
@@ -21,19 +43,16 @@ include "../../DatabaseFile/Database.php";
 	<style>
 		@page {margin:0 1cm}
 		html {margin:0 0cm}
-
-		.button {
-			background-color: #F05908; /* Green */
-			border: none;
-			color: white;
-			padding: 10px 45px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			font-size: 16px;
-		}
-
-
+        #des_textarea {
+          resize: vertical;
+        }
+        .meta-head{
+            color: black
+        }
+        .meta-body{
+            color: black
+        }
+        
 	</style>
 
 </head>
@@ -45,26 +64,9 @@ include "../../DatabaseFile/Database.php";
 
 		<textarea id='header'>Medical Report</textarea>
 		
-		<div id='identity'>
-
-            <div id='logo'>
-
-              <div id='logoctr'>
-                <a href='javascript:;' id='change-logo' title='Change logo'>Change Logo</a>
-                <a href='javascript:;' id='save-logo' title='Save changes'>Save</a>
-                |
-                <a href='javascript:;' id='delete-logo' title='Delete logo'>Delete Logo</a>
-                <a href='javascript:;' id='cancel-logo' title='Cancel changes'>Cancel</a>
-              </div>
-
-              <div id='logohelp'>
-                <input id='imageloc' type='text' size='50' value='' /><br />
-                (max width: 540px, max height: 100px)
-              </div>
               <img id='image' src='images/logo.jpg' alt='logo' />
-            </div>
+              <br><br>
 		
-		</div>
 		
 		<div style='clear:both'></div>
 		
@@ -73,16 +75,16 @@ include "../../DatabaseFile/Database.php";
 		<table id='vendorMeta'>
                 <tr>
                     <td class='meta-head'>Patient Name</td>
-                    <td><textarea>Ahmed Hossam</textarea></td>
+                    <td class='meta-body' style='text-align:center;'><?php echo $Patient->fullName; ?></td>
                 </tr>
                 <tr>
-
-                    <td class='meta-head'>Department</td>
-                    <td><textarea id='department'>Ophthalmologist</textarea></td>
+                    <td class='meta-head'>Date</td>
+                    <td class='meta-body' style='text-align:center;'><?php echo $Report->date; ?></td>
+                    
                 </tr>
                 <tr>
-                    <td class='meta-head'>Job Name</td>
-                    <td><textarea class='jobName'>CCTV</textarea></td>
+                    <td class='meta-head'>Date Of Birth</td>
+                    <td class='meta-body' style='text-align:center;'><?php echo $Patient->DOB; ?></td>
                 </tr>
 
             </table>
@@ -90,16 +92,15 @@ include "../../DatabaseFile/Database.php";
             <table id='meta'>
                 <tr>
                     <td class='meta-head'>Doctor Name</td>
-                    <td><textarea>Ahmed Khaled</textarea></td>
+                    <td class='meta-body' style='text-align:center;'><?php echo $Report->doctorID->fullName; ?></td>
                 </tr>
                 <tr>
-
-                    <td class='meta-head'>Date</td>
-                    <td><textarea id='date'>December 15, 2019</textarea></td>
+                    <td class='meta-head'>Department</td>
+                    <td class='meta-body' style='text-align:center;'>Ophthalmologist</td>
                 </tr>
                 <tr>
-                    <td class='meta-head'>States</td>
-                    <td><div class='due'>Issued</div></td>
+                    <td class='meta-head'>Status</td>
+                    <td class='meta-body' style='text-align:center;'><div class='due'>Issued</div></td>
                 </tr>
 
             </table>
@@ -107,45 +108,76 @@ include "../../DatabaseFile/Database.php";
 		</div>
 		<br><br>
 		
-		<table id='items'>
-		
-		  <tr>
-			  <th>#</th>
+		<table class='meta-body' id='items' style="">
+            <tr>
 		      <th>Fundus Images</th>
-		      <th>Description</th>
 		      <th>Disease Level</th>
 		      <th>Disease Stage</th>
 		  </tr>
-		  
-		  <tr class='item-row'>
-		  	  <td>1</td>
-		      <td><img id='outputLeft' src='images/6_left.jpeg'/></td>
-		      <td class='description'>Diabetic retinopathy can progress to this more severe type, known as 
-				  proliferative diabetic retinopathy.</td>
-		      <td><textarea>2</textarea></td>
-		      <td><textarea>Moderate</textarea></td>
-		  </tr>
-		  
-		  <tr class='item-row'>
-		  	  <td>2</td>
-		      <td><img id='outputLeft' src='images/6_right.jpeg'/></td>
-		      <td class='description'>In this type, damaged blood vessels close off, causing the growth of new, abnormal 
-				  blood vessels in the retina, and can leak into the clear, jelly-like substance that fills the center of your eye (vitreous).</td>
-		      <td>2</td>
-		      <td>Moderate</td>
-		  </tr>
-		
-		</table>
-		<br><br>
-		
-		<div id='terms'>
-		  <h5>Notes</h5>
-		  <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea>
-		</div>
-		<br>
+            
+		<?php 
+            if($Report->leftImageID->ID != null){
+                $Stage = new Stage($Report->leftStageID);
+                echo "
+                  <tr class='item-row'>
+                      <td style='text-align:center;'><img id='outputLeft' src='". Image::$folderPath . $Report->leftImageID->imagePath ."'/></td>
+                      <td style='font-size:20px; text-align:center;'>".$Stage->level."</td>
+                      <td style='font-size:20px; text-align:center;'>".$Stage->LevelName."</td>
+                  </tr>";
+            }
+            if($Report->rightImageID->ID != null){
+                $Stage = new Stage($Report->rightStageID);
+                echo "
+                  <tr class='item-row'>
+                      <td style='text-align:center;'><img id='outputLeft' src='". Image::$folderPath . $Report->rightImageID->imagePath."'/></td>
+                      <td style='font-size:20px; text-align:center;'>".$Stage->level."</td>
+                      <td style='font-size:20px; text-align:center;'>".$Stage->LevelName."</td>
+                  </tr>";
+            }  
+            
+            echo"
+                <tr>
+                <th style='background-color:grey; font-size:18px;' colspan='3' >Description</th>
+                </tr>";
+            
+            if(unserialize($_SESSION['user'])->userTypeID->name == 'Doctor') {
+            echo"
+                <tr class='item-row'>
+                    <td colspan='3' class='description'><textarea name='Comment' id='des_textarea'>".$Report->doctorComment."</textarea></td>
+                </tr>";
+            }
+            else {
+                echo"
+                <tr class='item-row'>
+                    <td colspan='3' class='description'>".$Report->doctorComment."</td>
+                </tr>";
+            }
+           echo "</table>";
+            
+            if(isset($_POST['Print']) && unserialize($_SESSION['user'])->userTypeID->name == 'Doctor') {
+                    $Report->doctorComment = $_POST['Comment'];
+                    Report::update($Report);
+//                    echo '<script>javascript:history.go(-1)</script>';
+                    echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/viewPatients.php';</script>";
+            }
+            
+                echo "
+                        <br><br>
+                        <div class='form-group text-center'>
+				        <input type='submit' value='Print Report' name='Print' style='margin-left:350px;' onclick='window.print()' class='btn btn-primary'>
+                        </div>
+		                <br><br>";
+            
+            ?>
+		<textarea id='header'>Medical Report</textarea>
+<!--
+        <script>
+            function Print(){
+                window.print();
+            }
+            </script>
+-->
 	</div> 
 	</form>
-
-	
 </body>
 </html>

@@ -5,8 +5,10 @@ class Report {
     public $date;
     public $doctorID;
     public $patientID;
-    public $imageID;
-    public $stageID;
+    public $leftImageID;
+    public $rightImageID;
+    public $leftStageID;
+    public $rightStageID;
     public $doctorComment;
     public $isDeleted;
 
@@ -21,8 +23,10 @@ class Report {
                 $this->date = $row['Date'];
                 $this->doctorID = new User($row['DoctorID']);
                 $this->patientID = $row['PatientID'];
-                $this->imageID = $row['ImageID'];
-                $this->stageID = $row['StageID'];
+                $this->leftImageID = new Image ($row['LeftImageID']);
+                $this->rightImageID = new Image ($row['RightImageID']);
+                $this->leftStageID = $row['LeftEyeStageID'];
+                $this->rightStageID = $row['RightEyeStageID'];
                 $this->doctorComment = $row['DoctorComment'];
                 $this->isDeleted = $row['IsDeleted'];
             }
@@ -30,16 +34,40 @@ class Report {
     }
 
     public static function add($obj){
-        $fields = array("Date","DoctorID","PatientID","ImageID","StageID","DoctorComment");
-        $values = array($obj->date, $obj->doctorID, $obj->patientID, $obj->imageID, $obj->stageID, $obj->doctorComment);
         $db = Database::getInstance();
+        
+        if($obj->rightImageID->ID == NULL){
+            $fields = array("Date","DoctorID","PatientID","LeftImageID","LeftEyeStageID");
+            $values = array($obj->date, $obj->doctorID->ID, $obj->patientID,$obj->leftImageID->ID,$obj->leftStageID);
+        }
+        else if($obj->leftImageID->ID == NULL){
+            $fields = array("Date","DoctorID","PatientID","RightImageID","RightEyeStageID");
+            $values = array($obj->date, $obj->doctorID->ID, $obj->patientID,$obj->rightImageID->ID,$obj->rightStageID);
+        }
+        else {
+            $fields = array("Date","DoctorID","PatientID","RightImageID","LeftImageID","RightEyeStageID","LeftEyeStageID");
+            $values = array($obj->date, $obj->doctorID->ID, $obj->patientID, $obj->rightImageID->ID, $obj->leftImageID->ID,$obj->rightStageID, $obj->leftStageID);
+        }
+        
         $db->insert("report", $fields, $values);
+        return $db->Last_ID();
     }
 
     public static function update($obj){
-        $fields = array("ID","Date","DoctorID","PatientID","ImageID","StageID","DoctorComment");
-        $values = array($obj->ID, $obj->date, $obj->doctorID, $obj->patientID, $obj->imageID, $obj->stageID, $obj->doctorComment);
         $db = Database::getInstance();
+        
+        if($obj->rightImageID->ID == NULL){
+            $fields = array("ID","Date","DoctorID","PatientID","LeftImageID","LeftEyeStageID","DoctorComment");
+            $values = array($obj->ID,$obj->date, $obj->doctorID->ID, $obj->patientID,$obj->leftImageID->ID,$obj->leftStageID,$obj->doctorComment);
+        }
+        else if($obj->leftImageID->ID == NULL){
+            $fields = array("ID","Date","DoctorID","PatientID","RightImageID","RightEyeStageID","DoctorComment");
+            $values = array($obj->ID,$obj->date, $obj->doctorID->ID, $obj->patientID,$obj->rightImageID->ID,$obj->rightStageID,$obj->doctorComment);
+        }
+        else {
+            $fields = array("ID","Date","DoctorID","PatientID","RightImageID","LeftImageID","RightEyeStageID","LeftEyeStageID","DoctorComment");
+            $values = array($obj->ID,$obj->date, $obj->doctorID->ID, $obj->patientID, $obj->rightImageID->ID, $obj->leftImageID->ID,$obj->rightStageID, $obj->leftStageID,$obj->doctorComment);
+        }        
         $db->update("report", $fields, $values);
     }
 

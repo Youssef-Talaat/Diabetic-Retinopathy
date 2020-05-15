@@ -5,6 +5,8 @@ include '../../Classes/User.php';
 include '../../Classes/Link.php';
 include '../../Classes/UserType.php';
 include '../../Classes/Report.php';
+include '../../Classes/Stage.php';
+include '../../Classes/Image.php';
 include '../../DatabaseFile/Database.php';
 
 ?>
@@ -181,8 +183,8 @@ include '../../DatabaseFile/Database.php';
 
 				if(isset($_POST['viewReport']))
 				{
-					//$doctor = new User($_POST['uploadImage']);
-					//$_SESSION['patientID'] = serialize($doctor);
+					$Report = new Report($_POST['viewReport']);
+					$_SESSION['Report'] = serialize($Report);
 					echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewReport.php';</script>";
 				}
 
@@ -196,7 +198,6 @@ include '../../DatabaseFile/Database.php';
         </script>
 	
 	</div>
-
 
 
 	<div class="portfolio-modal modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">

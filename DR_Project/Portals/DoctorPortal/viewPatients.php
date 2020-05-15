@@ -180,8 +180,8 @@ include '../../DatabaseFile/Database.php';
 
 				if(isset($_POST['uploadImage']))
 				{
-					$doctor = new User($_POST['uploadImage']);
-					$_SESSION['patientID'] = serialize($doctor);
+					$patient = new User($_POST['uploadImage']);
+					$_SESSION['patientID'] = serialize($patient);
 					echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/uploadImage.php';</script>";
 				}
 

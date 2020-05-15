@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 08, 2020 at 05:09 PM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
+-- Host: 127.0.0.1:3306
+-- Generation Time: May 14, 2020 at 08:36 PM
+-- Server version: 5.7.23
+-- PHP Version: 7.2.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,22 +28,15 @@ SET time_zone = "+00:00";
 -- Table structure for table `image`
 --
 
-CREATE TABLE `image` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE IF NOT EXISTS `image` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Width` int(11) NOT NULL,
   `Height` int(11) NOT NULL,
   `ImagePath` text NOT NULL,
-  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `image`
---
-
-INSERT INTO `image` (`ID`, `Width`, `Height`, `ImagePath`, `IsDeleted`) VALUES
-(1, 224, 224, 'link', 0),
-(2, 224, 224, 'link', 0),
-(3, 224, 224, 'link', 0);
+  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -51,12 +44,14 @@ INSERT INTO `image` (`ID`, `Width`, `Height`, `ImagePath`, `IsDeleted`) VALUES
 -- Table structure for table `link`
 --
 
-CREATE TABLE `link` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `link`;
+CREATE TABLE IF NOT EXISTS `link` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `PhysicalAddress` text NOT NULL,
   `FriendlyName` varchar(70) NOT NULL,
-  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `link`
@@ -73,12 +68,16 @@ INSERT INTO `link` (`ID`, `PhysicalAddress`, `FriendlyName`, `IsDeleted`) VALUES
 -- Table structure for table `permission`
 --
 
-CREATE TABLE `permission` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE IF NOT EXISTS `permission` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `LinkID` int(11) NOT NULL,
   `UserTypeID` int(11) NOT NULL,
-  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `LinkID` (`LinkID`),
+  KEY `UserTypeID` (`UserTypeID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `permission`
@@ -95,18 +94,27 @@ INSERT INTO `permission` (`ID`, `LinkID`, `UserTypeID`, `IsDeleted`) VALUES
 -- Table structure for table `report`
 --
 
-CREATE TABLE `report` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `report`;
+CREATE TABLE IF NOT EXISTS `report` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Date` date NOT NULL,
   `DoctorID` int(11) NOT NULL,
   `PatientID` int(11) NOT NULL,
-  `RightImageID` int(11) NOT NULL,
-  `LeftImageID` int(11) NOT NULL,
-  `RightEyeStageID` int(11) NOT NULL,
-  `LeftEyeStageID` int(11) NOT NULL,
-  `DoctorComment` text NOT NULL,
-  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `RightImageID` int(11) DEFAULT NULL,
+  `LeftImageID` int(11) DEFAULT NULL,
+  `RightEyeStageID` int(11) DEFAULT NULL,
+  `LeftEyeStageID` int(11) DEFAULT NULL,
+  `DoctorComment` text,
+  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `DoctorID` (`DoctorID`),
+  KEY `ImageID` (`RightImageID`),
+  KEY `PatientID` (`PatientID`),
+  KEY `StageID` (`LeftEyeStageID`),
+  KEY `LeftImageID` (`LeftImageID`),
+  KEY `RightEyeStageID` (`RightEyeStageID`),
+  KEY `RightEyeStageID_2` (`RightEyeStageID`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -114,12 +122,14 @@ CREATE TABLE `report` (
 -- Table structure for table `stage`
 --
 
-CREATE TABLE `stage` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `stage`;
+CREATE TABLE IF NOT EXISTS `stage` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Level` int(11) NOT NULL,
   `LevelName` varchar(40) NOT NULL,
-  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `stage`
@@ -127,10 +137,10 @@ CREATE TABLE `stage` (
 
 INSERT INTO `stage` (`ID`, `Level`, `LevelName`, `IsDeleted`) VALUES
 (1, 0, 'No DR', 0),
-(2, 1, 'Moderate', 0),
-(3, 2, 'Severe', 0),
-(4, 3, 'Proliferative', 0),
-(5, 4, 'Non Proliferative', 0);
+(2, 1, 'Mild', 0),
+(3, 2, 'Moderate', 0),
+(4, 3, 'Severe', 0),
+(5, 4, 'Proliferative', 0);
 
 -- --------------------------------------------------------
 
@@ -138,8 +148,9 @@ INSERT INTO `stage` (`ID`, `Level`, `LevelName`, `IsDeleted`) VALUES
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `FullName` text NOT NULL,
   `DOB` date NOT NULL,
   `Email` varchar(50) NOT NULL,
@@ -147,8 +158,10 @@ CREATE TABLE `user` (
   `Username` varchar(50) NOT NULL,
   `Password` varchar(50) NOT NULL,
   `UserTypeID` int(11) NOT NULL,
-  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `UserTypeID` (`UserTypeID`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
@@ -156,13 +169,14 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`ID`, `FullName`, `DOB`, `Email`, `Telephone`, `Username`, `Password`, `UserTypeID`, `IsDeleted`) VALUES
 (1, 'Mahmoud Hazem', '2019-12-18', 'm@gmail.com', '0186479321', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 3, 0),
-(2, 'Ahmed Alaa', '2020-01-11', 'a@gmail.com', '01064867259', 'patient', 'b1b0b8de8a6228f6501c0560365d3a7d74ffcd8e', 2, 0),
-(3, 'Hossam Abdullah', '2020-01-11', 'o@gmail.com', '01064867951', 'doctor', '1f0160076c9f42a157f0a8f0dcc68e02ff69045b', 1, 0),
-(4, 'Tamer Ali', '1970-01-01', 't@gmail.com', '01264897216', 'tamer', 'tamer', 2, 0),
+(2, 'Ahmed Alaa Mohamed', '2020-01-11', 'ahmed111@gmail.com', '01064867259', 'patient', 'b1b0b8de8a6228f6501c0560365d3a7d74ffcd8e', 2, 0),
+(3, 'Hossam Abdullah Awny', '2020-01-11', 'huss@gmail.com', '01064867951', 'doctor', '1f0160076c9f42a157f0a8f0dcc68e02ff69045b', 1, 0),
+(4, 'Tamer Ali', '1970-01-01', 't@gmail.com', '01264897216', 'tamer', '5bf1005ad1ee110b10f5c3d6d1890d1e16594479', 2, 0),
 (5, 'Omar Khaled', '1985-05-14', 't@gmail.com', '01264897216', 'omar', '4a6db2314c199446c0e2d3e48e30295622c96639', 2, 0),
 (6, 'Ayman Mohamed', '1960-09-17', 'a@gmail.com', '01264897216', 'ayman', 'ayman', 2, 0),
 (7, 'Mohamed Alaa', '1997-09-17', 'm@gmail.com', '01264897216', 'mohamed', 'mohamed', 2, 0),
-(8, 'Youssef Talaat', '1998-01-07', 'y@gmail.com', '01264897216', 'youssef', 'youssef', 2, 0);
+(8, 'Youssef Talaat', '1998-01-07', 'y@gmail.com', '01264897216', 'youssef', 'youssef', 2, 0),
+(9, 'Seif Khaled', '2001-11-10', 'seiflotfy@hotmail.com', '01522668812', 'seif', '498710fed19af56059bac1669959ab72d72a1657', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -170,11 +184,13 @@ INSERT INTO `user` (`ID`, `FullName`, `DOB`, `Email`, `Telephone`, `Username`, `
 -- Table structure for table `usertype`
 --
 
-CREATE TABLE `usertype` (
-  `ID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `usertype`;
+CREATE TABLE IF NOT EXISTS `usertype` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) NOT NULL,
-  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `usertype`
@@ -184,107 +200,6 @@ INSERT INTO `usertype` (`ID`, `Name`, `IsDeleted`) VALUES
 (1, 'Doctor', 0),
 (2, 'Patient', 0),
 (3, 'Admin', 0);
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `image`
---
-ALTER TABLE `image`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `link`
---
-ALTER TABLE `link`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `permission`
---
-ALTER TABLE `permission`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `LinkID` (`LinkID`),
-  ADD KEY `UserTypeID` (`UserTypeID`);
-
---
--- Indexes for table `report`
---
-ALTER TABLE `report`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `DoctorID` (`DoctorID`),
-  ADD KEY `ImageID` (`RightImageID`),
-  ADD KEY `PatientID` (`PatientID`),
-  ADD KEY `StageID` (`LeftEyeStageID`),
-  ADD KEY `LeftImageID` (`LeftImageID`),
-  ADD KEY `RightEyeStageID` (`RightEyeStageID`);
-
---
--- Indexes for table `stage`
---
-ALTER TABLE `stage`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `UserTypeID` (`UserTypeID`);
-
---
--- Indexes for table `usertype`
---
-ALTER TABLE `usertype`
-  ADD PRIMARY KEY (`ID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `image`
---
-ALTER TABLE `image`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `link`
---
-ALTER TABLE `link`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `permission`
---
-ALTER TABLE `permission`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `report`
---
-ALTER TABLE `report`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `stage`
---
-ALTER TABLE `stage`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `usertype`
---
-ALTER TABLE `usertype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -304,9 +219,9 @@ ALTER TABLE `report`
   ADD CONSTRAINT `report_ibfk_1` FOREIGN KEY (`DoctorID`) REFERENCES `user` (`ID`),
   ADD CONSTRAINT `report_ibfk_2` FOREIGN KEY (`RightImageID`) REFERENCES `image` (`ID`),
   ADD CONSTRAINT `report_ibfk_3` FOREIGN KEY (`PatientID`) REFERENCES `user` (`ID`),
-  ADD CONSTRAINT `report_ibfk_4` FOREIGN KEY (`LeftEyeStageID`) REFERENCES `stage` (`ID`),
   ADD CONSTRAINT `report_ibfk_5` FOREIGN KEY (`LeftImageID`) REFERENCES `image` (`ID`),
-  ADD CONSTRAINT `report_ibfk_6` FOREIGN KEY (`RightEyeStageID`) REFERENCES `stage` (`ID`);
+  ADD CONSTRAINT `report_ibfk_6` FOREIGN KEY (`RightEyeStageID`) REFERENCES `stage` (`ID`),
+  ADD CONSTRAINT `report_ibfk_7` FOREIGN KEY (`LeftEyeStageID`) REFERENCES `stage` (`ID`);
 
 --
 -- Constraints for table `user`
