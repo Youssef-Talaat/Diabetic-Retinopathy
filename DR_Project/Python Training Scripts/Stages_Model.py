@@ -60,7 +60,7 @@ for i in range(1, images_no + 1, 1):
         class_I3[classes_counter[3]] = cv2.imread(images_path + str(ws.cell(i, 1).value))
         classes_counter[3] += 1
     elif ws.cell(i, 2).value == 4:
-        class_I3[classes_counter[4]] = cv2.imread(images_path + str(ws.cell(i, 1).value))
+        class_I4[classes_counter[4]] = cv2.imread(images_path + str(ws.cell(i, 1).value))
         classes_counter[4] += 1
 
 print(classes)
