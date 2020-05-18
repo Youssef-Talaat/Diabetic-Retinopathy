@@ -188,12 +188,7 @@ include '../../Classes/Classify.php';
 					echo "
 					<div id='abc' class='container'>
 						<h2>Classification In Progress</h2>
-						<p>Classifying the input images and generating the result's report</p> 
-						<div class='progress'>
-							<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width:100%'>
-							100% Complete (success)
-							</div>
-						</div>
+						<p>Classifying the input images and generating the final results</p> 
 					</div>";
 
 				if(isset($_POST['classifyImage']))

@@ -113,6 +113,7 @@ $Patient = new User($Report->patientID);
 		      <th>Fundus Images</th>
 		      <th>Disease Level</th>
 		      <th>Disease Stage</th>
+              <th>Eye Position</th>
 		  </tr>
             
 		<?php 
@@ -123,6 +124,7 @@ $Patient = new User($Report->patientID);
                       <td style='text-align:center;'><img id='outputLeft' src='". Image::$folderPath . $Report->leftImageID->imagePath ."'/></td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->level."</td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->LevelName."</td>
+                      <td style='font-size:20px; text-align:center;'>Left</td>
                   </tr>";
             }
             if($Report->rightImageID->ID != null){
@@ -132,24 +134,25 @@ $Patient = new User($Report->patientID);
                       <td style='text-align:center;'><img id='outputLeft' src='". Image::$folderPath . $Report->rightImageID->imagePath."'/></td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->level."</td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->LevelName."</td>
+                      <td style='font-size:20px; text-align:center;'>Right</td>
                   </tr>";
             }  
             
             echo"
                 <tr>
-                <th style='background-color:grey; font-size:18px;' colspan='3' >Description</th>
+                <th style='background-color:grey; font-size:18px;' colspan='4' >Description</th>
                 </tr>";
             
             if(unserialize($_SESSION['user'])->userTypeID->name == 'Doctor') {
             echo"
                 <tr class='item-row'>
-                    <td colspan='3' class='description'><textarea name='Comment' id='des_textarea'>".$Report->doctorComment."</textarea></td>
+                    <td colspan='4' class='description'><textarea name='Comment' id='des_textarea'>".$Report->doctorComment."</textarea></td>
                 </tr>";
             }
             else {
                 echo"
                 <tr class='item-row'>
-                    <td colspan='3' class='description'>".$Report->doctorComment."</td>
+                    <td colspan='4' class='description'>".$Report->doctorComment."</td>
                 </tr>";
             }
            echo "</table>";
