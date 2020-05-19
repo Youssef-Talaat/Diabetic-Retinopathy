@@ -6,8 +6,8 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 image_dimension = 224
-model_yesNo_path = "C:/wamp64/www/DR_Project/Models/YesNo_fullModel.h5"
-model_stages_path = "C:/wamp64/www/DR_Project/Models/Stages_fullModel.h5"
+model_yesNo_path = "C:/wamp64/www/DR_Project/Python/YesNo_fullModel.h5"
+model_stages_path = "C:/wamp64/www/DR_Project/Python/Stages_fullModel.h5"
 image_path = sys.argv[1]
 
 model_yesNo = keras.models.load_model(model_yesNo_path)

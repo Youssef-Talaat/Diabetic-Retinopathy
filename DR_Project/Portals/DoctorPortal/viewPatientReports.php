@@ -4,6 +4,9 @@ session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
 include '../../Classes/UserType.php';
+include '../../Classes/Report.php';
+include '../../Classes/Stage.php';
+include '../../Classes/Image.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
 
@@ -20,43 +23,37 @@ include 'header.php';
 				<table id = 'tbl' class = 'table table-striped table-light'>
 				<thead>
 					<tr>
-						<th>FullName</th>
-						<th>DOB</th>
-						<th>Type</th>
-						<th></th>
+						<th>Doctor Name</th>
+						<th>Date</th>
+						<th>Status</th>
+						<th>View Report</th>
 						<th></th>
 					</tr>
 				</thead><tbody>";
-				$patients = User::view("UserTypeID = 2");
-				if($patients){
-					for($i=0;$i<sizeof($patients);$i++)
+				$reports = Report::view("PatientID = ".unserialize($_SESSION['patientID'])->ID);
+				if($reports){
+					for($i=0;$i<sizeof($reports);$i++)
 					{
 						echo "<tr>
-							<td>".$patients[$i]->fullName."</td>
-							<td>".$patients[$i]->DOB."</td>
-							<td>".$patients[$i]->userTypeID->name."</td>
-							<td align='center'><button type='submit' name='uploadImage' value='".$patients[$i]->ID."' class='btn btn-primary'>Upload Image</button></td>
-							<td align='center'><button type='submit' name='viewReports' value='".$patients[$i]->ID."' class='btn btn-primary'>View all Reports</button></td>
+							<td>".$reports[$i]->doctorID->fullName."</td>
+							<td>".$reports[$i]->date."</td>
+							<td>Issued</td>
+							<td align='center'><button type='submit' name='viewReport' value='".$reports[$i]->ID."' class='btn btn-primary'>View Report</button></td>
+							<td>
+								<button id='delBtn' type='button' data-toggle='modal' data-target='#Modal' data-id='".$reports[$i]->ID."'><i class = 'fa fa-trash' aria-hidden = 'true'></i></button>
+							</td>
 						</tr>";
 					}
 				}
 				echo "</tbody>
 				</table>
 				</form><br>";
-				
 
-				if(isset($_POST['uploadImage']))
+				if(isset($_POST['viewReport']))
 				{
-					$patient = new User($_POST['uploadImage']);
-					$_SESSION['patientID'] = serialize($patient);
-					echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/uploadImage.php';</script>";
-				}
-
-				if(isset($_POST['viewReports']))
-				{
-					$patient = new User($_POST['viewReports']);
-					$_SESSION['patientID'] = serialize($patient);
-					echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/viewPatientReports.php';</script>";
+					$Report = new Report($_POST['viewReport']);
+					$_SESSION['Report'] = serialize($Report);
+					echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewReport.php';</script>";
 				}
 
 			?>
@@ -69,7 +66,6 @@ include 'header.php';
         </script>
 	
 	</div>
-
 
 
 	<div class="portfolio-modal modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
@@ -123,7 +119,7 @@ include 'header.php';
       insertParam("id",rowid);  
       <?php
         if(!empty($_GET['id'])){
-          User::delete($_GET['id']);
+          Report::delete($_GET['id']);
           header('Location: ' . $_SERVER["HTTP_REFERER"] );
           exit;
         }
@@ -148,7 +144,6 @@ include 'header.php';
       document.location.search = kvp.join('&'); 
     }
   </script>
-
 
 	<?php
 		include '../footer.php';

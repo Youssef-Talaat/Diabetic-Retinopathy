@@ -2,6 +2,7 @@
 class Permission {
     public $ID;
     public $linkID;
+    public $userTypeID;
     public $isDeleted;
 
     public function __construct($ID){
@@ -13,21 +14,22 @@ class Permission {
                 $row = mysqli_fetch_array($result);
                 $this->ID = $row['ID'];
                 $this->linkID = $row['LinkID'];
+                $this->userTypeID = $row['UserTypeID'];
                 $this->isDeleted = $row['IsDeleted'];
             }
         }
     }
     
     public static function add($obj){
-        $fields = array("LinkID");
-        $values = array($obj->linkID);
+        $fields = array("LinkID", "UserTypeID");
+        $values = array($obj->linkID, $obj->userTypeID);
         $db = Database::getInstance();
         $db->insert("permission", $fields, $values);
     }
 
     public static function update($obj){
-        $fields = array("LinkID");
-        $values = array($obj->linkID);
+        $fields = array("ID", "LinkID", "UserTypeID");
+        $values = array($obj->ID, $obj->linkID, $obj->userTypeID);
         $db = Database::getInstance();
         $db->update("permission", $fields, $values);
     }

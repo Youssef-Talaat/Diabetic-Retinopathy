@@ -110,10 +110,10 @@ $Patient = new User($Report->patientID);
 		
 		<table class='meta-body' id='items' style="">
             <tr>
+              <th>Eye Position</th>
 		      <th>Fundus Images</th>
 		      <th>Disease Level</th>
 		      <th>Disease Stage</th>
-              <th>Eye Position</th>
 		  </tr>
             
 		<?php 
@@ -121,20 +121,20 @@ $Patient = new User($Report->patientID);
                 $Stage = new Stage($Report->leftStageID);
                 echo "
                   <tr class='item-row'>
+                      <td style='font-size:20px; text-align:center;'>Left</td>
                       <td style='text-align:center;'><img id='outputLeft' src='". Image::$folderPath . $Report->leftImageID->imagePath ."'/></td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->level."</td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->LevelName."</td>
-                      <td style='font-size:20px; text-align:center;'>Left</td>
                   </tr>";
             }
             if($Report->rightImageID->ID != null){
                 $Stage = new Stage($Report->rightStageID);
                 echo "
                   <tr class='item-row'>
+                      <td style='font-size:20px; text-align:center;'>Right</td>
                       <td style='text-align:center;'><img id='outputLeft' src='". Image::$folderPath . $Report->rightImageID->imagePath."'/></td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->level."</td>
                       <td style='font-size:20px; text-align:center;'>".$Stage->LevelName."</td>
-                      <td style='font-size:20px; text-align:center;'>Right</td>
                   </tr>";
             }  
             

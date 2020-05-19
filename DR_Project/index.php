@@ -80,36 +80,6 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="menu-wrap">
-				<div class="container">
-					<div class="row">
-						<div class="col-xs-8">
-							<div class="menu-1">
-								<ul>
-									<li><a href="index.html">Home</a></li>
-									<li class="has-dropdown">
-										<a href="doctors.html">Doctors</a>
-										<ul class="dropdown">
-											<li><a href="doctors-single.html">Single Doctor</a></li>
-										</ul>
-									</li>
-									<li><a href="services.html">Services</a></li>
-									<li class="has-dropdown">
-										<a href="departments.html">Departments</a>
-										<ul class="dropdown">
-											<li><a href="departments-single.html">Plasetic Surgery Department</a></li>
-											<li><a href="departments-single.html">Dental Department</a></li>
-											<li><a href="departments-single.html">Psychological Department</a></li>
-										</ul>
-									</li>
-									<li><a href="blog.html">Blog</a></li>
-									<li class="active"><a href="contact.html">Contact</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>-->
 		</div>
 	</nav>
 	
@@ -122,7 +92,7 @@
 		   			<div class="row">
 			   			<div class="col-md-8 col-md-offset-2 col-md-pull-2 slider-text">
 			   				<div class="slider-text-inner">
-			   					<h1><strong>Doctor</strong> Portal</h1>
+			   					<h1><strong>Login</strong> To Your Portal</h1>
 									<h2>Helping to improve quality</h2>
 			   				</div>
 			   			</div>
