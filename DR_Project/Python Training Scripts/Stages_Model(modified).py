@@ -192,7 +192,7 @@ def trainModel(model, epochs, top_layers_only):
 
 
 def evaluateModel(model):
-    print("trainModel(model, epochs, top_layers_only)")
+    print("evaluateModel(model)")
     # model.save('Stages_fullModel.h5')
     # model.save_weights('Stages_weights.h5')
 
@@ -211,7 +211,7 @@ def evaluateModel(model):
 
 
 def calculateTime():
-    print("trainModel(model, epochs, top_layers_only)")
+    print("calculateTime()")
     end_time = datetime.datetime.now()
     print("Time Taken : " + str(end_time - start_time))
 
