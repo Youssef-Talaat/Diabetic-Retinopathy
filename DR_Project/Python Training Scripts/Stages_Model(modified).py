@@ -17,19 +17,11 @@ def getNumOfImagesPerClass():
 
 def readImagesToArrays():
     print("readImagesToArrays()")
-    if classes_num == 4:
-        temp0 = np.zeros((images_num_per_class[1], image_dimension, image_dimension, 3), dtype='uint8')
-        temp1 = np.zeros((images_num_per_class[2], image_dimension, image_dimension, 3), dtype='uint8')
-        temp2 = np.zeros((images_num_per_class[3], image_dimension, image_dimension, 3), dtype='uint8')
-        temp3 = np.zeros((images_num_per_class[4], image_dimension, image_dimension, 3), dtype='uint8')
-        classes_images = np.array([temp0, temp1, temp2, temp3])
-    elif classes_num == 5:
-        temp0 = np.zeros((images_num_per_class[0], image_dimension, image_dimension, 3), dtype='uint8')
-        temp1 = np.zeros((images_num_per_class[1], image_dimension, image_dimension, 3), dtype='uint8')
-        temp2 = np.zeros((images_num_per_class[2], image_dimension, image_dimension, 3), dtype='uint8')
-        temp3 = np.zeros((images_num_per_class[3], image_dimension, image_dimension, 3), dtype='uint8')
-        temp4 = np.zeros((images_num_per_class[4], image_dimension, image_dimension, 3), dtype='uint8')
-        classes_images = np.array([temp0, temp1, temp2, temp3, temp4])
+    temp0 = np.zeros((images_num_per_class[1], image_dimension, image_dimension, 3), dtype='uint8')
+    temp1 = np.zeros((images_num_per_class[2], image_dimension, image_dimension, 3), dtype='uint8')
+    temp2 = np.zeros((images_num_per_class[3], image_dimension, image_dimension, 3), dtype='uint8')
+    temp3 = np.zeros((images_num_per_class[4], image_dimension, image_dimension, 3), dtype='uint8')
+    classes_images = np.array([temp0, temp1, temp2, temp3])
 
     for i in range(1, images_num + 1, 1):
         '''if ws.cell(i, 2).value == 0 and classification_num == 2:
@@ -236,8 +228,8 @@ image_dimension = 227
 train_percentage = 0.7
 classes_num = 4
 augmentation_per_image = 3
-
 test_percentage = 1 - train_percentage
+
 wb = load_workbook(excel_path)
 ws = wb[sheet_name]
 
