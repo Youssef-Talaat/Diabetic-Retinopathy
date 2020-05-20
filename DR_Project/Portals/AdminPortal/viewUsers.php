@@ -98,17 +98,17 @@ include 'header.php';
             <div class="row justify-content-center">
               <div class="col-lg-8">
                 <!-- Portfolio Modal - Title -->
-                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0" style="margin-left:-660px;">Are you sure?</h2>
+                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0" style="margin-left:-200px;">Are you sure?</h2>
                 <br><br>
                 <div class="row">
                   <div class="col-md-6 form-group">
-                      <button class="btn btn-primary" onclick='func();' data-dismiss="modal" style="margin-left:-420px;">
+                      <button class="btn btn-primary" onclick='func();' data-dismiss="modal">
                         <i class="fa fa-check" aria-hidden="true"></i>
                         Yes
                       </button>
                   </div>
                   <div class="col-md-6 form-group">
-                      <button class="btn btn-primary" data-dismiss="modal" style="margin-left:-920px;">
+                      <button class="btn btn-primary" data-dismiss="modal" style="margin-left:-400px;">
                         <i class="fa fa-times" aria-hidden="true"></i>
                         No
                       </button>

@@ -38,10 +38,18 @@ include 'header.php';
 							<td>".$reports[$i]->doctorID->fullName."</td>
 							<td>".$reports[$i]->date."</td>
 							<td>Issued</td>
-							<td align='center'><button type='submit' name='viewReport' value='".$reports[$i]->ID."' class='btn btn-primary'>View Report</button></td>
-							<td>
+							<td align='center'><button type='submit' name='viewReport' value='".$reports[$i]->ID."' class='btn btn-primary'>View Report</button></td>";
+                        if($reports[$i]->doctorID->ID == unserialize($_SESSION['user'])->ID){
+                            echo "
+                            <td>
 								<button id='delBtn' type='button' data-toggle='modal' data-target='#Modal' data-id='".$reports[$i]->ID."'><i class = 'fa fa-trash' aria-hidden = 'true'></i></button>
 							</td>
+                            ";   
+                        }
+                        else {
+                            echo "<td></td>";
+                        }
+                        echo "
 						</tr>";
 					}
 				}
@@ -63,8 +71,7 @@ include 'header.php';
 
 		<script>
             $('#tbl').DataTable();
-        </script>
-	
+        </script>	
 	</div>
 
 
@@ -83,7 +90,7 @@ include 'header.php';
             <div class="row justify-content-center">
               <div class="col-lg-8">
                 <!-- Portfolio Modal - Title -->
-                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">Are you sure?</h2>
+                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0" style="margin-left:-200px;">Are you sure?</h2>
                 <br><br>
                 <div class="row">
                   <div class="col-md-6 form-group">
@@ -93,7 +100,7 @@ include 'header.php';
                       </button>
                   </div>
                   <div class="col-md-6 form-group">
-                      <button class="btn btn-primary" data-dismiss="modal">
+                      <button class="btn btn-primary" data-dismiss="modal" style="margin-left:-400px;">
                         <i class="fa fa-times" aria-hidden="true"></i>
                         No
                       </button>
