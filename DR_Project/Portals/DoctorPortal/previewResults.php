@@ -7,6 +7,7 @@ include '../../Classes/UserType.php';
 include '../../Classes/Image.php';
 include '../../Classes/Report.php';
 include '../../Classes/Stage.php';
+include '../../Classes/Doctor.php';
 include '../../DatabaseFile/Database.php';
 ?>
 <!DOCTYPE HTML>
@@ -472,7 +473,7 @@ include '../../DatabaseFile/Database.php';
 
 				if(isset($_POST['SaveResults'])) {
                     $Report = unserialize($_SESSION["Report"]);
-                    $Report->ID = Report::add(unserialize($_SESSION["Report"]));
+					$Report->ID = Doctor::createReport(unserialize($_SESSION["Report"]));
                     $_SESSION["Report"] = serialize($Report);
 					echo "<script>window.location = 'http://localhost/DR_Project/Portals/DoctorPortal/previewReport.php';</script>";
 				}

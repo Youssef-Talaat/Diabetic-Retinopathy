@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
@@ -26,7 +27,7 @@ include 'header.php';
 						<th>Delete</th>
 					</tr>
 				</thead><tbody>";
-				$userTypes = UserType::view(1);
+        $userTypes = Admin::viewUserTypes();
 				if($userTypes){
 					for($i=0;$i<sizeof($userTypes);$i++)
 					{
@@ -127,7 +128,7 @@ include 'header.php';
       insertParam("id",rowid);  
       <?php
         if(!empty($_GET['id'])){
-          UserType::delete($_GET['id']);
+          Admin::deleteUserTypes($_GET['id']);
           header('Location: ' . $_SERVER["HTTP_REFERER"] );
           exit;
         }

@@ -2,25 +2,24 @@
 
 class Doctor extends User {
 
-    public function viewPatients() {
-
+    public function viewPatients($condition) {
+        return User::view($condition);
     }
 
-    public function uploadImages($image, $reportID) {
-
+    public function uploadImage($LeftObject) {
+        return Image::add($LeftObject);
     }
 
-    public function classify($image) {
-
-        return $stage;
+    public function classify($imagePath) {
+        return Classify::classifyWithCNN($imagePath);
     }
 
-    public function printReports($reportID) {
-
+    public function createReport($report) {
+        return Report::add($report);
     }
 
-    public function suggestedStage($stage) {
-
+    public function viewReport($patientID) {
+        return Report::view($patientID);
     }
 
 }

@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
@@ -37,7 +38,7 @@ include 'header.php';
 				$usertype = new UserType(0);
                 $usertype->ID = unserialize($_SESSION['edit'])->ID;
 				$usertype->name = $_POST['userTypeName'];
-				UserType::update($usertype);
+				Admin::editUserTypes($usertype);
 				echo '<script>javascript:history.go(-2)</script>';
 			}
 		?>

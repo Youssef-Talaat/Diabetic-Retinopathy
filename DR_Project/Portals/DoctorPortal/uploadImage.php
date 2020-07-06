@@ -6,6 +6,7 @@ include '../../Classes/Link.php';
 include '../../Classes/UserType.php';
 include '../../Classes/Image.php';
 include '../../Classes/Report.php';
+include '../../Classes/Doctor.php';
 include '../../Classes/Stage.php';
 include '../../Classes/Preprocess.php';
 include '../../DatabaseFile/Database.php';
@@ -61,7 +62,7 @@ include 'header.php';
                     $Report->patientID = unserialize($_SESSION['patientID'])->ID;
                     $Report->date = date("Y-m-d");
                     
-                    $Path = "C:/wamp64/www/DR_Project/Retinal_Images";
+                    $Path = "C:/xampp/htdocs/DR_Project/Retinal_Images";
 
                     $LeftImage = $_FILES['imageLeft']["tmp_name"];
                     $RightImage = $_FILES['imageRight']["tmp_name"];
@@ -78,10 +79,10 @@ include 'header.php';
                         
                             Preprocess::normalize($LeftClassifierPath);
                             
-                            $Classify = Classify::classifyWithCNN($LeftClassifierPath);
+                            $Classify = Doctor::classify($LeftClassifierPath);
                             $_SESSION['LImage'] = serialize($Classify);
                         
-                            $LeftObject->ID = Image::add($LeftObject);
+                            $LeftObject->ID = Doctor::uploadImage($LeftObject);
                         
                             $Report->leftImageID = $LeftObject;
                             $Report->rightImageID = new Image(0);
@@ -96,10 +97,10 @@ include 'header.php';
                         
                             Preprocess::normalize($RightClassifierPath);
                         
-                            $Classify = Classify::classifyWithCNN($RightClassifierPath);
+                            $Classify = Doctor::classify($LeftClassifierPath);
                             $_SESSION['RImage'] = serialize($Classify); 
                         
-                            $RightObject->ID = Image::add($RightObject);
+                            $RightObject->ID = Doctor::uploadImage($RightObject);
                         
                             $Report->rightImageID = $RightObject;
                             
@@ -113,18 +114,18 @@ include 'header.php';
                             $LeftClassifierPath = $Path ."/". time() . ".jpg";
                             $LeftImagePath = time() . ".jpg";
                             $LeftObject->imagePath = $LeftImagePath;
-                            $LeftObject->ID = Image::add($LeftObject);
+                            $LeftObject->ID = Doctor::uploadImage($LeftObject);
                                                 
                             $RightClassifierPath = $Path ."/". (time() + 1) . ".jpg";
                             $RightImagePath = (time() + 1) . ".jpg";
                             $RightObject->imagePath = $RightImagePath;
-                            $RightObject->ID = Image::add($RightObject);
+                            $RightObject->ID = Doctor::uploadImage($RightObject);
                         
                             Preprocess::normalize($LeftClassifierPath);
                             Preprocess::normalize($RightClassifierPath);
                         
-                            $Classify = Classify::classifyWithCNN($LeftClassifierPath);
-                            $Classify2 = Classify::classifyWithCNN($RightClassifierPath);
+                            $Classify = Doctor::classify($LeftClassifierPath);
+                            $Classify2 = Doctor::classify($LeftClassifierPath);
                             
                             $_SESSION['LImage'] = serialize($Classify);
                             $_SESSION['RImage'] = serialize($Classify2);  

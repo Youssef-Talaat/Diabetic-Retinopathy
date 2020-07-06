@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
@@ -30,18 +31,18 @@ include 'header.php';
 						<th>Delete</th>
 					</tr>
 				</thead><tbody>";
-				$doctors = User::view(1);
-				if($doctors){
-					for($i=0;$i<sizeof($doctors);$i++)
+        $users = Admin::viewUsers();
+				if($users){
+					for($i=0;$i<sizeof($users);$i++)
 					{
 						echo "<tr>
-							<td>".$doctors[$i]->fullName."</td>
-							<td>".$doctors[$i]->DOB."</td>
-							<td>".$doctors[$i]->username."</td>
-							<td>".$doctors[$i]->userTypeID->name."</td>
-							<td><button type='submit' name='edit' value='".$doctors[$i]->ID."'><i class = 'fa fa-pencil' aria-hidden = 'true'></i></button></td>
+							<td>".$users[$i]->fullName."</td>
+							<td>".$users[$i]->DOB."</td>
+							<td>".$users[$i]->username."</td>
+							<td>".$users[$i]->userTypeID->name."</td>
+							<td><button type='submit' name='edit' value='".$users[$i]->ID."'><i class = 'fa fa-pencil' aria-hidden = 'true'></i></button></td>
 							<td>
-							<button id='delBtn' type='button' data-toggle='modal' data-target='#Modal' data-id='".$doctors[$i]->ID."'><i class = 'fa fa-trash' aria-hidden = 'true'></i></button>
+							<button id='delBtn' type='button' data-toggle='modal' data-target='#Modal' data-id='".$users[$i]->ID."'><i class = 'fa fa-trash' aria-hidden = 'true'></i></button>
 							</td>
 						</tr>";
 					}
@@ -65,8 +66,8 @@ include 'header.php';
 
 				if(isset($_POST['edit']))
 				{
-					$doctor = new User($_POST['edit']);
-					$_SESSION['edit'] = serialize($doctor);
+					$users = new User($_POST['edit']);
+					$_SESSION['edit'] = serialize($users);
 					echo "<script>window.location = 'http://localhost/DR_Project/Portals/AdminPortal/editUsers.php';</script>";
 				}
 
@@ -134,7 +135,7 @@ include 'header.php';
       insertParam("id",rowid);  
       <?php
         if(!empty($_GET['id'])){
-          User::delete($_GET['id']);
+          Admin::deleteUser($_GET['id']);
 //          echo '<script>javascript:history.go(-1)</script>';
           header('Location: ' . $_SERVER["HTTP_REFERER"] );
           exit;

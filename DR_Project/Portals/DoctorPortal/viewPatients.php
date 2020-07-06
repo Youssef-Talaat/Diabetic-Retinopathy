@@ -4,6 +4,7 @@ session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
 include '../../Classes/UserType.php';
+include '../../Classes/Doctor.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
 
@@ -27,7 +28,7 @@ include 'header.php';
 						<th></th>
 					</tr>
 				</thead><tbody>";
-				$patients = User::view("UserTypeID = 2");
+        $patients = Doctor::viewPatients("UserTypeID = 2");
 				if($patients){
 					for($i=0;$i<sizeof($patients);$i++)
 					{

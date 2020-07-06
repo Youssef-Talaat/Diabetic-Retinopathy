@@ -20,8 +20,8 @@ class Patient extends User {
             }
     }
 
-    public function viewReports() {
-
+    public function viewReports($condition) {
+        return Report::view($condition);
     }
 
 }

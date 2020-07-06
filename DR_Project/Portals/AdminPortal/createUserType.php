@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
@@ -36,7 +37,7 @@ include 'header.php';
 			if(isset($_POST['createUserType'])) {
 				$userType = new UserType(0);
 				$userType->name = $_POST['userTypeName'];
-				UserType::add($userType);
+				Admin::addUserType($userType);
 				echo '<script>javascript:history.go(-2)</script>';
 			}
 		?>

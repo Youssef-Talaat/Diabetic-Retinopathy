@@ -9,6 +9,7 @@ include '../../Classes/Stage.php';
 include '../../Classes/Report.php';
 include '../../Classes/Image.php';
 include '../../Classes/UserType.php';
+include '../../Classes/Doctor.php';
 include "../../DatabaseFile/Database.php";
     
 $Report = unserialize($_SESSION['Report']); 

@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
@@ -65,7 +66,7 @@ include 'header.php';
 						</div>
 
 						<div class="form-group text-center">
-							<input type="submit" value="Create User" name="createDoctor" class="btn btn-primary">
+							<input type="submit" value="Create User" name="createUser" class="btn btn-primary">
 						</div>
 					</form>
 				</div>
@@ -73,16 +74,16 @@ include 'header.php';
 		</div>
 
 		<?php
-			if(isset($_POST['createDoctor'])) {
-				$doctor = new User(0);
-				$doctor->fullName = $_POST['fullName'];
-				$doctor->DOB = $_POST['DOB'];
-				$doctor->email = $_POST['email'];
-				$doctor->telephone = $_POST['telephone'];
-				$doctor->username = $_POST['username'];
-				$doctor->password = sha1($_POST['password']);
-				$doctor->userTypeID = $_POST['userType'];
-				User::add($doctor);
+			if(isset($_POST['createUser'])) {
+				$user = new User(0);
+				$user->fullName = $_POST['fullName'];
+				$user->DOB = $_POST['DOB'];
+				$user->email = $_POST['email'];
+				$user->telephone = $_POST['telephone'];
+				$user->username = $_POST['username'];
+				$user->password = sha1($_POST['password']);
+				$user->userTypeID = $_POST['userType'];
+				Admin::addUser($user);
 				echo '<script>javascript:history.go(-2)</script>';
 			}
 		?>

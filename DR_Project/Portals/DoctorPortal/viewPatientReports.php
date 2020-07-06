@@ -5,6 +5,7 @@ include '../../Classes/User.php';
 include '../../Classes/Link.php';
 include '../../Classes/UserType.php';
 include '../../Classes/Report.php';
+include '../../Classes/Doctor.php';
 include '../../Classes/Stage.php';
 include '../../Classes/Image.php';
 include '../../DatabaseFile/Database.php';
@@ -30,7 +31,7 @@ include 'header.php';
 						<th></th>
 					</tr>
 				</thead><tbody>";
-				$reports = Report::view("PatientID = ".unserialize($_SESSION['patientID'])->ID);
+        $reports = Doctor::viewReport("PatientID = ".unserialize($_SESSION['patientID'])->ID);
 				if($reports){
 					for($i=0;$i<sizeof($reports);$i++)
 					{

@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../Classes/Permission.php';
 include '../../DatabaseFile/Database.php';
@@ -61,7 +62,7 @@ include 'header.php';
 				$permission = new Permission(0);
 				$permission->linkID = $_POST['linkID'];
 				$permission->userTypeID = $_POST['userTypeID'];
-				Permission::add($permission);
+				Admin::addPermission($permission);
 				echo "<script>javascript:history.go(-2)</script>";
 			}
 		?>

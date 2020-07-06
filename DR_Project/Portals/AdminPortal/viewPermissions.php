@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../Classes/Permission.php';
 include '../../DatabaseFile/Database.php';
@@ -29,7 +30,7 @@ include 'header.php';
 						<th>Delete</th>
 					</tr>
 				</thead><tbody>";
-				$permissions = Permission::view(1);
+        $permissions = Admin::viewPermissions();
 				if($permissions){
 					for($i=0;$i<sizeof($permissions);$i++)
 					{
@@ -128,7 +129,7 @@ include 'header.php';
       insertParam("id",rowid);  
       <?php
         if(!empty($_GET['id'])){
-		  Permission::delete($_GET['id']);
+          Admin::deletePermission($_GET['id']);
           header('Location: ' . $_SERVER["HTTP_REFERER"] );
           exit;
         }

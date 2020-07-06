@@ -3,6 +3,7 @@
 session_start();
 include '../../Classes/User.php';
 include '../../Classes/Link.php';
+include '../../Classes/Admin.php';
 include '../../Classes/UserType.php';
 include '../../DatabaseFile/Database.php';
 include 'header.php';
@@ -65,7 +66,7 @@ include 'header.php';
 						</div>
 
 						<div class="form-group text-center">
-							<input type="submit" value="Edit User" name="EditDoctor" class="btn btn-primary">
+							<input type="submit" value="Edit User" name="EditUser" class="btn btn-primary">
 						</div>
 					</form>
 				</div>
@@ -73,22 +74,22 @@ include 'header.php';
 		</div>
 
 		<?php
-			if(isset($_POST['EditDoctor'])) {
-				$doctor = new User(0);
-                $doctor->ID = unserialize($_SESSION['edit'])->ID;
-				$doctor->fullName = $_POST['fullName'];
-				$doctor->DOB = $_POST['DOB'];
-				$doctor->email = $_POST['email'];
-				$doctor->telephone = $_POST['telephone'];
-				$doctor->username = $_POST['username'];
+			if(isset($_POST['EditUser'])) {
+				$user = new User(0);
+                $user->ID = unserialize($_SESSION['edit'])->ID;
+				$user->fullName = $_POST['fullName'];
+				$user->DOB = $_POST['DOB'];
+				$user->email = $_POST['email'];
+				$user->telephone = $_POST['telephone'];
+				$user->username = $_POST['username'];
                 if(empty($_POST["password"])){
-                    $doctor->password = unserialize($_SESSION['edit'])->password;
+                    $user->password = unserialize($_SESSION['edit'])->password;
                 }
                 else{
-                    $doctor->password = sha1($_POST['password']);
+                    $user->password = sha1($_POST['password']);
                 }
-				$doctor->userTypeID = $_POST['userType'];
-				User::update($doctor);
+				$user->userTypeID = $_POST['userType'];
+				Admin::editUser($user);
 				echo '<script>javascript:history.go(-2)</script>';
 			}
 		?>
